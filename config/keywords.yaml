@@ -6,6 +6,8 @@ entities:
     - "blockalgo frontier"
     - "block algo"
     - "blockalgos"
+    - "baf9.ai"
+    - "baf9"
   secondary:
     - "baf platform"
     - "baf technologies"
@@ -15,6 +17,7 @@ entities:
     - "baf arbitrage"
     - "baf mining"
     - "baf investment"
+    - "baf-1"
 
 categories:
   withdrawal_issues:
