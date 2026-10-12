@@ -8,9 +8,11 @@ from dashboard.charts import (
 from dashboard.latest_findings import render_latest_findings
 from dashboard.sources_status import render_sources_status
 from dashboard.evidence_detail import render_evidence_and_tools
+from dashboard.forensic_audit import render_forensic_audit
 
 __all__ = [
     "render_overview",
+    "render_forensic_audit",
     "plot_sentiment_trend",
     "plot_complaint_volume",
     "plot_category_breakdown",

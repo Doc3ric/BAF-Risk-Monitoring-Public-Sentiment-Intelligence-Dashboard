@@ -16,6 +16,7 @@ if ROOT_DIR not in sys.path:
 
 from database.repository import Repository
 from dashboard.overview import render_overview
+from dashboard.forensic_audit import render_forensic_audit
 from dashboard.charts import (
     plot_sentiment_trend,
     plot_complaint_volume,
@@ -158,6 +159,7 @@ def main():
             "Intelligence Views",
             options=[
                 "📊 Executive Overview",
+                "🔬 Forensic Audit & Red Flags",
                 "📈 Historical Trends & Charts",
                 "📋 Latest Findings & Feed",
                 "📜 GitBook Policy Tracker & Diffs",
@@ -168,11 +170,12 @@ def main():
 
         st.markdown("<hr style='border-color: #232D3F; margin: 15px 0;'>", unsafe_allow_html=True)
 
-        st.markdown("##### 📌 Monitored Official URLs")
+        st.markdown("##### 📌 Monitored Target URLs")
         st.markdown(
             """
-            - [BAF Introduction](https://baf-1.gitbook.io/baf/platform-overview/readme/introduction)
-            - [BAF GitBook Root](https://baf-1.gitbook.io/baf/)
+            - [BAF Platform Web App](https://baf9.ai)
+            - [BAF GitBook Docs](https://baf-1.gitbook.io/baf/)
+            - [BAF GitBook Introduction](https://baf-1.gitbook.io/baf/platform-overview/readme/introduction)
             """
         )
 
@@ -181,7 +184,7 @@ def main():
             """
             <div style="background-color: #0E1117; padding: 10px; border-radius: 6px; font-size: 0.74rem; color: #64748B; border: 1px solid #1E293B;">
                 <strong>OSINT Compliance Notice:</strong><br>
-                This personal tool tracks public information without paid commercial models. It does not certify financial safety or declare misconduct. Evidence is classified for objective human evaluation.
+                This personal tool tracks public information without paid commercial models. It separates company self-claims from independent public sentiment and verified technical tests.
             </div>
             """,
             unsafe_allow_html=True
@@ -190,6 +193,9 @@ def main():
     # Main Area Router
     if nav_choice == "📊 Executive Overview":
         render_overview(repo, settings, latest_metrics, active_alerts, sources)
+
+    elif nav_choice == "🔬 Forensic Audit & Red Flags":
+        render_forensic_audit()
 
     elif nav_choice == "📈 Historical Trends & Charts":
         st.markdown("### 📈 Historical Intelligence & Multi-Source Trends")

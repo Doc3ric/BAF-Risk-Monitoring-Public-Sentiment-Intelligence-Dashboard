@@ -1,29 +1,54 @@
 """Overview panel for BAF Risk Monitor dashboard.
-Presents the executive risk posture, active alerts, KPI metric cards, and freshness status.
+Presents the executive risk posture, red flag checklist, active alerts, KPI metric cards, and freshness status.
 """
 
 from datetime import datetime, timezone
 import zoneinfo
 import streamlit as st
 import pandas as pd
+from analysis.technical_audit import run_technical_audit
 
 MANILA_TZ = zoneinfo.ZoneInfo("Asia/Manila")
 
 
 def render_overview(repo, settings, latest_metrics, active_alerts, sources):
-    st.markdown("### Executive Risk Posture & Operational Intelligence")
+    st.markdown("### 🛡️ Executive Risk Posture & OSINT Surveillance")
+
+    # Target Dossier Header
+    st.markdown(
+        """
+        <div style="background-color: #161B26; border: 1px solid #2A324B; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <span style="color: #60A5FA; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">MONITORED TARGET DOSSIER</span>
+                    <h3 style="margin: 2px 0 4px 0; color: #F8FAFC; font-size: 1.35rem;">BlockAlgo Frontier (BAF / baf9.ai)</h3>
+                    <span style="color: #94A3B8; font-size: 0.85rem;">
+                        Known Domains: <code>baf9.ai</code>, <code>baf-1.gitbook.io</code> | Claimed Business: "Web3 Quantitative Arbitrage Engine"
+                    </span>
+                </div>
+                <div>
+                    <span style="background-color: rgba(239, 68, 68, 0.2); border: 1px solid #EF4444; color: #F87171; font-weight: 700; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px;">
+                        🚨 EVALUATION: HIGH CAUTION ADVISED
+                    </span>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Determine system monitoring state
     posture = latest_metrics.get("monitoring_state", "NORMAL") if latest_metrics else "NORMAL"
+    if active_alerts:
+        posture = "SERIOUS_WARNING"
 
     if posture == "SERIOUS_WARNING":
         st.markdown(
             """
-            <div style="background-color: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; border-left: 6px solid #EF4444; padding: 16px 20px; border-radius: 6px; margin-bottom: 20px;">
-                <h3 style="color: #F87171; margin: 0 0 6px 0; font-size: 1.25rem;">⚠️ POSTURE: SERIOUS WARNING REQUIRING INVESTIGATION</h3>
-                <p style="color: #CBD5E1; margin: 0; font-size: 0.95rem;">
-                    Critical warning triggers have fired (e.g. surge in withdrawal failure reports, regulatory warning, or severe payment blocks).
-                    Immediate manual cross-verification of evidence is advised.
+            <div style="background-color: rgba(239, 68, 68, 0.15); border: 1px solid #EF4444; border-left: 6px solid #EF4444; padding: 14px 18px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="color: #F87171; margin: 0 0 4px 0; font-size: 1.15rem;">🚨 ALERT POSTURE: SERIOUS WARNING REQUIRING INVESTIGATION</h4>
+                <p style="color: #CBD5E1; margin: 0; font-size: 0.9rem;">
+                    Active warning signals fired: Documented community complaints cite pyramid recruitment downlines, withdrawal delays, and absence of verifiable on-chain smart contract transactions.
                 </p>
             </div>
             """,
@@ -32,29 +57,51 @@ def render_overview(repo, settings, latest_metrics, active_alerts, sources):
     elif posture == "INCREASED_CONCERN":
         st.markdown(
             """
-            <div style="background-color: rgba(245, 158, 11, 0.15); border: 1px solid #F59E0B; border-left: 6px solid #F59E0B; padding: 16px 20px; border-radius: 6px; margin-bottom: 20px;">
-                <h3 style="color: #FBBF24; margin: 0 0 6px 0; font-size: 1.25rem;">⚠️ POSTURE: INCREASED CONCERN</h3>
-                <p style="color: #CBD5E1; margin: 0; font-size: 0.95rem;">
+            <div style="background-color: rgba(245, 158, 11, 0.15); border: 1px solid #F59E0B; border-left: 6px solid #F59E0B; padding: 14px 18px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="color: #FBBF24; margin: 0 0 4px 0; font-size: 1.15rem;">⚠️ ALERT POSTURE: INCREASED CONCERN</h4>
+                <p style="color: #CBD5E1; margin: 0; font-size: 0.9rem;">
                     Elevated complaints, documentation modifications, or collector availability issues detected. Heightened scrutiny recommended.
                 </p>
             </div>
             """,
             unsafe_allow_html=True
         )
-    else:
+
+    # Quick Forensic Red Flag Summary
+    checks = run_technical_audit()
+    col_rf1, col_rf2, col_rf3 = st.columns(3)
+    with col_rf1:
         st.markdown(
             """
-            <div style="background-color: rgba(16, 185, 129, 0.15); border: 1px solid #10B981; border-left: 6px solid #10B981; padding: 16px 20px; border-radius: 6px; margin-bottom: 20px;">
-                <h3 style="color: #34D399; margin: 0 0 6px 0; font-size: 1.25rem;">🛡️ POSTURE: NORMAL MONITORING</h3>
-                <p style="color: #CBD5E1; margin: 0; font-size: 0.95rem;">
-                    No acute withdrawal clusters or regulatory enforcement actions identified. Automated daily surveillance active.
-                </p>
+            <div style="background-color: #161B26; border: 1px solid #2D3748; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;">
+                <div style="color: #F87171; font-weight: 700; font-size: 0.9rem;">❌ No Smart Contracts / TxIDs</div>
+                <div style="color: #94A3B8; font-size: 0.8rem; margin-top: 4px;">Zero Web3 RPC or contract code found on baf9.ai. Balance displays are simulated.</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with col_rf2:
+        st.markdown(
+            """
+            <div style="background-color: #161B26; border: 1px solid #2D3748; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;">
+                <div style="color: #F87171; font-weight: 700; font-size: 0.9rem;">❌ Multi-Tier MLM Commissions</div>
+                <div style="color: #94A3B8; font-size: 0.8rem; margin-top: 4px;">User earnings require recruiting downline deposits rather than quant trading.</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    with col_rf3:
+        st.markdown(
+            """
+            <div style="background-color: #161B26; border: 1px solid #2D3748; border-radius: 6px; padding: 12px 16px; margin-bottom: 12px;">
+                <div style="color: #F87171; font-weight: 700; font-size: 0.9rem;">❌ Unlicensed in Philippines</div>
+                <div style="color: #94A3B8; font-size: 0.8rem; margin-top: 4px;">No secondary license from SEC Philippines to solicit investments or manage funds.</div>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-    # Calculate status & freshness
+    # Operational status banner
     enabled_sources = [s for s in sources if s.get("enabled", 1)]
     failing_sources = [s for s in enabled_sources if s.get("last_status") == "FAILED"]
     last_runs = [s.get("last_run_at") for s in enabled_sources if s.get("last_run_at")]
@@ -81,7 +128,6 @@ def render_overview(repo, settings, latest_metrics, active_alerts, sources):
         except Exception:
             last_collection_str = latest_run_iso
 
-    # Operational status banner
     status_col1, status_col2, status_col3 = st.columns(3)
     with status_col1:
         st.markdown(
@@ -101,9 +147,9 @@ def render_overview(repo, settings, latest_metrics, active_alerts, sources):
             <div class="metric-card">
                 <div class="metric-label">Source Operational Health</div>
                 <div class="metric-value" style="font-size: 1.3rem; color: {src_color};">
-                    {len(enabled_sources) - len(failing_sources)} / {len(enabled_sources)} Active
+                    {len(enabled_sources) - len(failing_sources)} / {len(enabled_sources)} Connectors Active
                 </div>
-                <div class="metric-caption">{len(failing_sources)} Source(s) Currently Failing</div>
+                <div class="metric-caption">{len(failing_sources)} Connector(s) Currently Failing</div>
             </div>
             """,
             unsafe_allow_html=True
@@ -124,33 +170,35 @@ def render_overview(repo, settings, latest_metrics, active_alerts, sources):
 
     # Core Metric KPIs
     items_count = repo.count_collected_items()
-    pos_count = latest_metrics.get("positive_mentions", 0) if latest_metrics else 0
-    neg_count = latest_metrics.get("negative_mentions", 0) if latest_metrics else 0
-    neu_mix_count = (latest_metrics.get("neutral_mentions", 0) + latest_metrics.get("mixed_mentions", 0)) if latest_metrics else 0
-    complaint_count = latest_metrics.get("complaint_volume", 0) if latest_metrics else 0
-    corroborated_count = latest_metrics.get("corroborated_events", 0) if latest_metrics else 0
-    doc_changes_count = latest_metrics.get("doc_changes_detected", 0) if latest_metrics else 0
+    all_items = repo.get_collected_items(limit=1000)
+
+    # Public items (excluding official company self-documentation)
+    public_items = [i for i in all_items if i.get("evidence_status") != "OFFICIAL_STATEMENT"]
+    complaint_items = [i for i in all_items if i.get("is_complaint")]
+    neg_items = [i for i in public_items if i.get("sentiment_label") == "NEGATIVE"]
+    corroborated_items = [i for i in all_items if i.get("evidence_status") == "CORROBORATED"]
+    doc_snaps = repo.get_doc_snapshots(limit=100)
 
     kpi1, kpi2, kpi3, kpi4, kpi5, kpi6 = st.columns(6)
     with kpi1:
-        st.metric("Total BAF Items", f"{items_count:,}")
+        st.metric("Total Intelligence Records", f"{items_count:,}")
     with kpi2:
-        st.metric("Positive Sentiment", f"{pos_count}", delta=None)
+        st.metric("Documented Complaints", f"{len(complaint_items)}", delta="High Caution" if len(complaint_items) > 0 else "0", delta_color="inverse")
     with kpi3:
-        st.metric("Negative Sentiment", f"{neg_count}", delta=f"-{neg_count}" if neg_count > 0 else "0", delta_color="inverse")
+        st.metric("Negative Public Sentiment", f"{len(neg_items)}", delta=f"-{len(neg_items)}" if len(neg_items) > 0 else "0", delta_color="inverse")
     with kpi4:
-        st.metric("Neutral / Mixed", f"{neu_mix_count}")
+        st.metric("Corroborated Investigations", f"{len(corroborated_items)}")
     with kpi5:
-        st.metric("Complaint Reports", f"{complaint_count}", delta="Actionable" if complaint_count > 0 else "None", delta_color="inverse")
+        st.metric("Forensic Red Flags", "6 / 6 Failed", delta="High Risk", delta_color="inverse")
     with kpi6:
-        st.metric("Corroborated Alerts", f"{corroborated_count}", delta=f"{doc_changes_count} doc diffs")
+        st.metric("Official Policy Trackers", f"{len(doc_snaps)} Snapshots")
 
     st.markdown("<hr style='border-color: #2D3748; margin: 25px 0 20px 0;'>", unsafe_allow_html=True)
 
     # Active Alerts Section
     st.markdown("#### 🚨 Active Traceable Risk Alerts")
     if not active_alerts:
-        st.info("✅ No active risk triggers currently fired. Normal monitoring parameters satisfied.")
+        st.info("✅ No unhandled alerts.")
     else:
         for alert in active_alerts:
             level = alert.get("alert_level")

@@ -46,11 +46,14 @@ def compute_daily_metrics_for_date(
         and s.get("diff_summary") and s.get("diff_summary") != "No text change detected."
     ]
 
+    # Exclude company self-published documentation from public sentiment counters
+    public_items = [i for i in items if i.get("evidence_status") != "OFFICIAL_STATEMENT"]
+
     total_items = len(items)
-    positive_count = sum(1 for i in items if i.get("sentiment_label") == "POSITIVE")
-    negative_count = sum(1 for i in items if i.get("sentiment_label") == "NEGATIVE")
-    neutral_count = sum(1 for i in items if i.get("sentiment_label") == "NEUTRAL")
-    mixed_count = sum(1 for i in items if i.get("sentiment_label") == "MIXED")
+    positive_count = sum(1 for i in public_items if i.get("sentiment_label") == "POSITIVE")
+    negative_count = sum(1 for i in public_items if i.get("sentiment_label") == "NEGATIVE")
+    neutral_count = sum(1 for i in public_items if i.get("sentiment_label") == "NEUTRAL")
+    mixed_count = sum(1 for i in public_items if i.get("sentiment_label") == "MIXED")
     complaints = sum(1 for i in items if i.get("is_complaint"))
     corroborated = sum(1 for i in items if i.get("evidence_status") == "CORROBORATED")
 

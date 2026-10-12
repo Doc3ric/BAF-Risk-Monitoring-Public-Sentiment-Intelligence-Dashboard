@@ -21,6 +21,7 @@ from collectors.gdelt import GDELTCollector
 from collectors.rss import RSSNewsCollector
 from collectors.reddit import RedditCollector
 from collectors.manual_import import ManualImportCollector
+from collectors.community_dossier import CommunityDossierCollector
 from analysis.daily_metrics import compute_daily_metrics_for_date
 from analysis.risk_rules import evaluate_risk_posture
 
@@ -140,7 +141,8 @@ def run_all_collectors() -> dict:
         ManualImportCollector(
             source_id=sources_cfg.get("manual_import", {}).get("id", "manual_import"),
             name=sources_cfg.get("manual_import", {}).get("name", "Manual Uploads")
-        )
+        ),
+        CommunityDossierCollector()
     ]
 
     results = {}
