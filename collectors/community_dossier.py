@@ -43,27 +43,27 @@ COMMUNITY_DOSSIER = [
     },
     {
         "title": "Community Complaint: BlockAlgo Customer Support Ghosted & Telegram Admin Blocked Users Asking for Payouts",
-        "url": "https://www.reddit.com/r/CryptoScams/comments/baf_support_ghosted",
+        "url": "https://www.reddit.com/r/Scams/comments/1wv2gz9/ph_deep_dive_on_blockalgo_frontier_baf_baf9ai_a/",
         "content_excerpt": "Victim reports that after requesting a $1,200 withdrawal from BlockAlgo (BAF), platform customer support went completely unresponsive. When following up in the official Telegram group, admins deleted the messages and banned the account. Funds remain frozen with zero reply.",
         "published_at": "2026-10-07T14:10:00+00:00",
-        "author": "ScamVictimAdvocate (r/CryptoScams)",
-        "source_name": "Reddit r/CryptoScams"
+        "author": "Community Contributor (r/Scams)",
+        "source_name": "Reddit r/Scams"
     },
     {
-        "title": "Victim Report: BlockAlgo Frontier Demands 20% 'Tax Verification Fee' to Release Frozen Funds",
-        "url": "https://www.reddit.com/r/Scams/comments/baf9_tax_fee_extortion",
-        "content_excerpt": "Classic advance-fee fraud mechanism: BlockAlgo BAF customer trying to withdraw profits was notified that their account is flagged for audit. They are demanding a 20% 'liquidity tax fee' to unlock withdrawals. Do not pay, this is an exit scam trap.",
+        "title": "Victim Report & Discussion: BlockAlgo BAF 20% Tax Verification Fee & Exit-Scam Extortion",
+        "url": "https://www.reddit.com/r/Scams/comments/1wv2gz9/ph_deep_dive_on_blockalgo_frontier_baf_baf9ai_a/",
+        "content_excerpt": "Advance-fee fraud mechanism: BlockAlgo BAF users attempting to withdraw profits are notified that their account is flagged for audit and must deposit additional money or pay a 20% 'tax/liquidity fee' before withdrawal. Do not send additional funds; this is an exit-scam trap.",
         "published_at": "2026-10-09T09:45:00+00:00",
-        "author": "r/Scams Investigator",
+        "author": "/u/DigzGwentplayer (r/Scams)",
         "source_name": "Reddit r/Scams"
     },
     {
         "title": "Public Warning: BlockAlgo BAF Deposit Credited But Internal Arbitrage Bot Simulation Draining Balance",
-        "url": "https://www.reddit.com/r/phinvest/comments/baf_arbitrage_losses",
-        "content_excerpt": "User deposited USDT into BlockAlgo Frontier expecting guaranteed 2% daily yield. Instead, fake trades caused sudden simulated liquidations while promoters asked for another top-up to recover losses. Severe deposit loss complaint.",
+        "url": "https://www.reddit.com/r/ScammersPH/comments/1wv2n3u/deep_dive_on_blockalgo_frontier_baf9ai/",
+        "content_excerpt": "User deposited USDT into BlockAlgo Frontier expecting guaranteed daily yields. Instead, fabricated database trades caused sudden simulated liquidations while promoters asked for another top-up to recover losses. Severe deposit loss complaint.",
         "published_at": "2026-10-10T11:30:00+00:00",
-        "author": "phinvest Member",
-        "source_name": "Reddit r/phinvest"
+        "author": "Community Member (r/ScammersPH)",
+        "source_name": "Reddit r/ScammersPH"
     }
 ]
 
