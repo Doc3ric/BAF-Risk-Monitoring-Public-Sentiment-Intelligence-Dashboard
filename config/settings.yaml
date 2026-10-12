@@ -1,0 +1,86 @@
+# BAF Risk Monitor - System Settings
+app:
+  name: "BAF Risk Monitor"
+  version: "1.0.0"
+  timezone: "Asia/Manila"
+  database_path: "data/baf_risk_monitor.db"
+  backup_dir: "data/backups"
+  log_dir: "logs"
+  log_level: "INFO"
+
+network:
+  timeout_seconds: 15
+  max_retries: 3
+  backoff_factor: 2.0
+  user_agent: "BAFRiskMonitor/1.0 (OSINT Research Bot; compliant; +https://github.com/local/baf-risk-monitor)"
+
+sources:
+  official_baf:
+    id: "official_baf_docs"
+    name: "BAF Official GitBook & Documentation"
+    enabled: true
+    urls:
+      - "https://baf-1.gitbook.io/baf/platform-overview/readme/introduction"
+      - "https://baf-1.gitbook.io/baf/"
+    access_method: "HTTP GET / GitBook Static HTML parsing"
+    requires_key: false
+    update_frequency: "Daily"
+    notes: "Snapshots text content, hashes sections, and detects diffs/changes."
+
+  gdelt_news:
+    id: "gdelt_news"
+    name: "GDELT Global News Intelligence API"
+    enabled: true
+    base_url: "https://api.gdeltproject.org/api/v2/doc/doc"
+    queries:
+      - "\"BlockAlgo\""
+      - "\"BlockAlgo Frontier\""
+    access_method: "Public GDELT 2.0 DOC API (JSON)"
+    requires_key: false
+    update_frequency: "Daily"
+    notes: "Monitors international news coverage and syndicated articles."
+
+  google_news_rss:
+    id: "google_news_rss"
+    name: "Google News RSS Feed"
+    enabled: true
+    feeds:
+      - url: "https://news.google.com/rss/search?q=%22BlockAlgo%22+OR+%22BlockAlgo+Frontier%22&hl=en-US&gl=US&ceid=US:en"
+        query: "BlockAlgo OR 'BlockAlgo Frontier'"
+      - url: "https://news.google.com/rss/search?q=%22BAF%22+%22BlockAlgo%22&hl=en-US&gl=US&ceid=US:en"
+        query: "BAF BlockAlgo"
+    access_method: "Public RSS feed parsing"
+    requires_key: false
+    update_frequency: "Daily"
+    notes: "Aggregated syndication and media reporting."
+
+  reddit_discussions:
+    id: "reddit_discussions"
+    name: "Reddit Public Discussions & Forums"
+    enabled: true
+    search_queries:
+      - "BlockAlgo"
+      - "BlockAlgo Frontier"
+    subreddits:
+      - "all"
+    access_method: "Public Reddit JSON Search API"
+    requires_key: false
+    update_frequency: "Daily"
+    notes: "Public user discussions and peer reviews."
+
+  manual_import:
+    id: "manual_import"
+    name: "Manual Intelligence & Regulatory Uploads"
+    enabled: true
+    access_method: "Direct User Entry / CSV / JSON file import"
+    requires_key: false
+    update_frequency: "On Demand"
+    notes: "Captures SEC Philippines, DTI, court dockets, offline tips, and verified notices."
+
+alert_rules:
+  withdrawal_complaints_threshold: 3
+  deposit_problems_threshold: 3
+  regulatory_warning_severity: "SERIOUS_WARNING"
+  official_policy_change_severity: "INCREASED_CONCERN"
+  source_stale_hours_threshold: 48
+  min_independent_sources_for_corroboration: 2

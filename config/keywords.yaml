@@ -1,0 +1,194 @@
+# BAF Risk Monitor - Keywords and Classification Lexicon
+
+entities:
+  primary:
+    - "blockalgo"
+    - "blockalgo frontier"
+    - "block algo"
+    - "blockalgos"
+  secondary:
+    - "baf platform"
+    - "baf technologies"
+    - "baf app"
+    - "baf token"
+    - "baf trading"
+    - "baf arbitrage"
+    - "baf mining"
+    - "baf investment"
+
+categories:
+  withdrawal_issues:
+    label: "Withdrawal Delays & Failures"
+    keywords:
+      - "withdrawal delay"
+      - "withdrawal fail"
+      - "withdraw failed"
+      - "cannot withdraw"
+      - "cant withdraw"
+      - "unable to withdraw"
+      - "pending withdrawal"
+      - "frozen funds"
+      - "frozen withdrawal"
+      - "withdrawal error"
+      - "withholding fund"
+      - "payout delay"
+      - "block withdrawal"
+      - "hold money"
+      - "not paying out"
+      - "cashout delay"
+      - "cannot cash out"
+
+  deposit_payment_problems:
+    label: "Deposit & Payment Problems"
+    keywords:
+      - "deposit issue"
+      - "deposit lost"
+      - "deposit not credited"
+      - "payment failed"
+      - "payment gateway error"
+      - "wallet address error"
+      - "double charge"
+      - "deposit delayed"
+      - "failed deposit"
+      - "missing deposit"
+
+  refund_complaints:
+    label: "Refund Complaints"
+    keywords:
+      - "refund denied"
+      - "demand refund"
+      - "request refund"
+      - "no refund"
+      - "chargeback"
+      - "dispute transaction"
+      - "money back guarantee"
+      - "refused to refund"
+
+  customer_support_complaints:
+    label: "Customer Support Complaints"
+    keywords:
+      - "support not responding"
+      - "support unresponsive"
+      - "terrible support"
+      - "ignored ticket"
+      - "support blocked me"
+      - "no reply support"
+      - "useless support"
+      - "ghosted by support"
+      - "deleted my telegram"
+      - "blocked on telegram"
+
+  fee_and_reward_changes:
+    label: "Changes in Fees & Reward Terms"
+    keywords:
+      - "increased fee"
+      - "hidden fee"
+      - "withdrawal fee increased"
+      - "change of terms"
+      - "new fee requirement"
+      - "tax fee to withdraw"
+      - "deposit more to unlock"
+      - "unlock fee"
+      - "commission changed"
+      - "tier change"
+      - "reward reduced"
+      - "maintenance fee"
+
+  recruitment_and_referrals:
+    label: "Recruitment & Referral Promotions"
+    keywords:
+      - "referral code"
+      - "invite bonus"
+      - "invite friends"
+      - "join my team"
+      - "downline"
+      - "upline"
+      - "affiliate link"
+      - "direct referral"
+      - "pyramid"
+      - "mlm"
+      - "multilevel"
+      - "recruitment"
+      - "networking group"
+
+  earnings_and_return_claims:
+    label: "Earnings & Return Claims"
+    keywords:
+      - "guaranteed return"
+      - "daily profit"
+      - "guaranteed yield"
+      - "passive income"
+      - "risk free profit"
+      - "high return"
+      - "100% win rate"
+      - "arbitrage bot guarantee"
+      - "doubled my money"
+      - "huge profit"
+      - "daily 2%"
+      - "daily 5%"
+
+  platform_downtime:
+    label: "Platform Downtime & Access Issues"
+    keywords:
+      - "server down"
+      - "platform down"
+      - "app crashing"
+      - "cannot login"
+      - "maintenance outage"
+      - "website unreachable"
+      - "connection timeout"
+      - "database error"
+      - "login failed"
+      - "502 bad gateway"
+      - "404 not found"
+
+  corporate_regulatory_developments:
+    label: "Corporate & Regulatory Developments"
+    keywords:
+      - "sec advisory"
+      - "sec warning"
+      - "regulatory action"
+      - "cease and desist"
+      - "advisory against"
+      - "unlicensed"
+      - "banned"
+      - "investigation"
+      - "law enforcement"
+      - "financial authority"
+      - "subpoena"
+      - "corporate registry"
+      - "sec philippines"
+      - "dti advisory"
+
+  independent_reporting:
+    label: "Independent Reporting & General Analysis"
+    keywords:
+      - "investigation report"
+      - "due diligence"
+      - "independent review"
+      - "platform review"
+      - "audit"
+      - "smart contract audit"
+      - "code audit"
+      - "background check"
+      - "news report"
+
+evidence_statuses:
+  - id: "OFFICIAL_STATEMENT"
+    label: "Official Statement"
+    description: "Published directly by the platform, team, or official channels."
+  - id: "CORROBORATED"
+    label: "Independently Corroborated"
+    description: "Confirmed across multiple distinct, independent sources or official registries."
+  - id: "REPORTED_ALLEGATION"
+    label: "Reported Allegation"
+    description: "Specific claim or accusation reported by an individual or third-party without formal validation."
+  - id: "PERSONAL_TESTIMONIAL"
+    label: "Personal Opinion / Testimonial"
+    description: "Subjective user account, recommendation, or endorsement."
+  - id: "UNVERIFIED"
+    label: "Unverified"
+    description: "Single unconfirmed public mention or forum snippet."
+  - id: "UNABLE_TO_VERIFY"
+    label: "Unable to Verify"
+    description: "Insufficient source details or inaccessible origin link."

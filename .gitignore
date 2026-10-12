@@ -1,0 +1,27 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Data and SQLite Database
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/backups/
+!data/.gitkeep
+
+# Logs
+logs/*.log
+!logs/.gitkeep
+
+# Environment variables
+.env
+
+# Streamlit
+.streamlit/
