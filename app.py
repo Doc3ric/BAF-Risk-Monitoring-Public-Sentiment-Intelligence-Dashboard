@@ -4,7 +4,7 @@ Dedicated exclusively to independent monitoring of BlockAlgo Frontier Technologi
 
 import os
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import zoneinfo
 import yaml
 import streamlit as st
