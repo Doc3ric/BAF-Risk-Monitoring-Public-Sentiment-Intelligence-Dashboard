@@ -18,14 +18,14 @@ sources:
   official_baf:
     id: "official_baf_docs"
     name: "BAF Official GitBook & Documentation"
-    enabled: true
+    enabled: false
     urls:
       - "https://baf-1.gitbook.io/baf/platform-overview/readme/introduction"
       - "https://baf-1.gitbook.io/baf/"
     access_method: "HTTP GET / GitBook Static HTML parsing"
     requires_key: false
     update_frequency: "Daily"
-    notes: "Snapshots text content, hashes sections, and detects diffs/changes."
+    notes: "Disabled - Focus exclusively on public community complaints and investigations."
 
   gdelt_news:
     id: "gdelt_news"

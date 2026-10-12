@@ -92,7 +92,16 @@ def classify_content(title: str, content: str) -> Dict[str, Any]:
         "corporate_regulatory_developments"
     }
 
-    is_complaint = primary in complaint_categories or any(c in complaint_categories for c in secondaries)
+    # High-signal complaint and fraud warning keywords in text
+    complaint_signals = [
+        "complaint", "complaining", "warning", "warn", "scam", "scammer", "scammers",
+        "ponzi", "pyramid", "fraud", "victim", "frozen", "freeze", "cannot withdraw",
+        "unable to withdraw", "delay", "delays", "unresponsive", "ghosted", "fake",
+        "loss", "lost money", "tax fee", "advisory"
+    ]
+
+    has_complaint_signal = any(sig in combined for sig in complaint_signals)
+    is_complaint = (primary in complaint_categories or any(c in complaint_categories for c in secondaries) or has_complaint_signal)
 
     return {
         "primary_category": primary,

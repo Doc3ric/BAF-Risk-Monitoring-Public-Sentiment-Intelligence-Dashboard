@@ -93,12 +93,15 @@ def render_latest_findings(repo, sources):
             index=0
         )
 
-    col_sub1, col_sub2 = st.columns([3, 1])
+    col_sub1, col_sub2, col_sub3 = st.columns([2, 1, 1])
     with col_sub1:
-        source_options = ["ALL"] + [s["id"] for s in sources]
-        source_filter = st.selectbox("Monitored Source", options=source_options, format_func=lambda x: "All Sources" if x == "ALL" else next((s["name"] for s in sources if s["id"] == x), x))
+        # Filter out official baf from source options if user doesn't want it
+        source_options = ["ALL"] + [s["id"] for s in sources if s["id"] != "official_baf_docs"]
+        source_filter = st.selectbox("Monitored Source", options=source_options, format_func=lambda x: "All Public Sources" if x == "ALL" else next((s["name"] for s in sources if s["id"] == x), x))
     with col_sub2:
-        complaints_only = st.checkbox("Complaints Only", value=False)
+        complaints_only = st.checkbox("🚨 Complaints Only", value=True)
+    with col_sub3:
+        hide_official = st.checkbox("Hide Official BAF Docs", value=True)
 
     # Query items with selected filters
     items = repo.get_collected_items(
@@ -110,6 +113,9 @@ def render_latest_findings(repo, sources):
         search_query=search_query if search_query.strip() else None,
         limit=150
     )
+
+    if hide_official:
+        items = [i for i in items if i.get("evidence_status") != "OFFICIAL_STATEMENT" and i.get("source_id") != "official_baf_docs"]
 
     st.markdown(f"<div style='color: #94A3B8; font-size: 0.9rem; margin-bottom: 12px;'>Showing <strong>{len(items)}</strong> observation(s) matching criteria:</div>", unsafe_allow_html=True)
 

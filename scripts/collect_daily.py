@@ -147,7 +147,19 @@ def run_all_collectors() -> dict:
 
     results = {}
     for c in collectors:
+        # Check if explicitly disabled in settings
+        is_enabled = True
+        for s_key, s_data in sources_cfg.items():
+            if s_data.get("id") == c.source_id:
+                is_enabled = s_data.get("enabled", True)
+                break
+        
+        c.enabled = is_enabled
         c.register(repo)
+        if not is_enabled:
+            logger.info(f"Skipping disabled collector: {c.name}")
+            continue
+
         logger.info(f"Running collector: {c.name}...")
         res = c.run(repo)
         results[c.source_id] = res

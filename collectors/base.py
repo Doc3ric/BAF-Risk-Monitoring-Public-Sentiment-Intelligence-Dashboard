@@ -109,6 +109,12 @@ class BaseCollector(ABC):
                 secondaries = cat_info["secondary_categories"]
                 is_complaint = cat_info["is_complaint"]
 
+                # If identified as a complaint/investigative warning, ensure negative classification
+                if is_complaint and sent_label != "NEGATIVE":
+                    sent_label = "NEGATIVE"
+                    if sent_score >= 0:
+                        sent_score = -0.50
+
                 # Evidence status
                 evidence_st = determine_evidence_status(
                     source_type=self.source_type,

@@ -173,25 +173,22 @@ def render_overview(repo, settings, latest_metrics, active_alerts, sources):
     all_items = repo.get_collected_items(limit=1000)
 
     # Public items (excluding official company self-documentation)
-    public_items = [i for i in all_items if i.get("evidence_status") != "OFFICIAL_STATEMENT"]
-    complaint_items = [i for i in all_items if i.get("is_complaint")]
+    public_items = [i for i in all_items if i.get("evidence_status") != "OFFICIAL_STATEMENT" and i.get("source_id") != "official_baf_docs"]
+    complaint_items = [i for i in public_items if i.get("is_complaint")]
     neg_items = [i for i in public_items if i.get("sentiment_label") == "NEGATIVE"]
-    corroborated_items = [i for i in all_items if i.get("evidence_status") == "CORROBORATED"]
-    doc_snaps = repo.get_doc_snapshots(limit=100)
+    corroborated_items = [i for i in public_items if i.get("evidence_status") in ("CORROBORATED", "REPORTED_ALLEGATION")]
 
-    kpi1, kpi2, kpi3, kpi4, kpi5, kpi6 = st.columns(6)
+    kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
     with kpi1:
-        st.metric("Total Intelligence Records", f"{items_count:,}")
+        st.metric("Public Intelligence Records", f"{len(public_items):,}")
     with kpi2:
-        st.metric("Documented Complaints", f"{len(complaint_items)}", delta="High Caution" if len(complaint_items) > 0 else "0", delta_color="inverse")
+        st.metric("🚨 Public Complaints", f"{len(complaint_items)}", delta="Critical Alerts" if len(complaint_items) > 0 else "0", delta_color="inverse")
     with kpi3:
-        st.metric("Negative Public Sentiment", f"{len(neg_items)}", delta=f"-{len(neg_items)}" if len(neg_items) > 0 else "0", delta_color="inverse")
+        st.metric("Negative Public Sentiment", f"{len(neg_items)}", delta=f"{len(neg_items)} Negative" if len(neg_items) > 0 else "0", delta_color="inverse")
     with kpi4:
-        st.metric("Corroborated Investigations", f"{len(corroborated_items)}")
+        st.metric("Corroborated Allegations", f"{len(corroborated_items)}")
     with kpi5:
         st.metric("Forensic Red Flags", "6 / 6 Failed", delta="High Risk", delta_color="inverse")
-    with kpi6:
-        st.metric("Official Policy Trackers", f"{len(doc_snaps)} Snapshots")
 
     st.markdown("<hr style='border-color: #2D3748; margin: 25px 0 20px 0;'>", unsafe_allow_html=True)
 

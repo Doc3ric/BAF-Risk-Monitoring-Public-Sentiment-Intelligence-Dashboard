@@ -159,10 +159,9 @@ def main():
             "Intelligence Views",
             options=[
                 "📊 Executive Overview",
+                "🚨 Public Complaints & Feed",
                 "🔬 Forensic Audit & Red Flags",
                 "📈 Historical Trends & Charts",
-                "📋 Latest Findings & Feed",
-                "📜 GitBook Policy Tracker & Diffs",
                 "🔌 Sources Health & Connectors",
                 "📥 Ingestion & Data Export"
             ]
@@ -193,6 +192,9 @@ def main():
     # Main Area Router
     if nav_choice == "📊 Executive Overview":
         render_overview(repo, settings, latest_metrics, active_alerts, sources)
+
+    elif nav_choice == "🚨 Public Complaints & Feed":
+        render_latest_findings(repo, sources)
 
     elif nav_choice == "🔬 Forensic Audit & Red Flags":
         render_forensic_audit()
@@ -235,12 +237,6 @@ def main():
             st.plotly_chart(plot_category_breakdown(items_df), use_container_width=True)
         with chart_col4:
             st.plotly_chart(plot_source_distribution(items_df), use_container_width=True)
-
-    elif nav_choice == "📋 Latest Findings & Feed":
-        render_latest_findings(repo, sources)
-
-    elif nav_choice == "📜 GitBook Policy Tracker & Diffs":
-        render_evidence_and_tools(repo)
 
     elif nav_choice == "🔌 Sources Health & Connectors":
         render_sources_status(repo, sources)
