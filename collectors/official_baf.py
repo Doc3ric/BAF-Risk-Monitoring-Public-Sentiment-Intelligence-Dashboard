@@ -75,7 +75,7 @@ class OfficialBAFCollector(BaseCollector):
                     "url": target_url,
                     "content_excerpt": clean_text[:2000],
                     "raw_text": clean_text,
-                    "published_at": datetime.now(timezone.utc).isoformat(),
+                    "published_at": None, # Undisclosed by GitBook; do not fabricate publication timestamp
                     "author": "BlockAlgo Frontier Team"
                 })
             except Exception as e:

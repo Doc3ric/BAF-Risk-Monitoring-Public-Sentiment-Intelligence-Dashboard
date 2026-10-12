@@ -130,7 +130,7 @@ class BaseCollector(ABC):
                     "simhash": simhash_val,
                     "duplicate_group_id": dup_group,
                     "published_at": raw.get("published_at"),
-                    "collected_at": start_time.isoformat(),
+                    "collected_at": datetime.now(timezone.utc).isoformat(),
                     "author": raw.get("author"),
                     "sentiment_label": sent_label,
                     "sentiment_score": sent_score,

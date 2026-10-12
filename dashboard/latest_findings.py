@@ -2,7 +2,7 @@
 Provides granular filtering by date, source, category, sentiment, and verification status.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 import zoneinfo
 import streamlit as st
 import pandas as pd
@@ -10,14 +10,36 @@ import pandas as pd
 MANILA_TZ = zoneinfo.ZoneInfo("Asia/Manila")
 
 
-def format_timestamp(iso_str):
+def format_published_date(iso_str):
+    if not iso_str:
+        return "Undisclosed / Documentation"
+    try:
+        dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
+        manila_time = dt.astimezone(MANILA_TZ)
+        return manila_time.strftime("%Y-%m-%d %I:%M %p PST")
+    except Exception:
+        return str(iso_str)[:19]
+
+
+def format_collected_realtime(iso_str):
     if not iso_str:
         return "Unknown"
     try:
         dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00"))
-        return dt.astimezone(MANILA_TZ).strftime("%Y-%m-%d %H:%M")
+        manila_time = dt.astimezone(MANILA_TZ)
+        time_str = manila_time.strftime("%Y-%m-%d %I:%M:%S %p PST")
+        diff_sec = (datetime.now(timezone.utc) - dt.astimezone(timezone.utc)).total_seconds()
+        if diff_sec < 60:
+            rel = "Just now"
+        elif diff_sec < 3600:
+            rel = f"{int(diff_sec // 60)}m ago"
+        elif diff_sec < 86400:
+            rel = f"{int(diff_sec // 3600)}h ago"
+        else:
+            rel = f"{int(diff_sec // 86400)}d ago"
+        return f"{time_str} ({rel})"
     except Exception:
-        return str(iso_str)[:16]
+        return str(iso_str)
 
 
 def get_sentiment_badge_html(sentiment: str) -> str:
@@ -105,8 +127,8 @@ def render_latest_findings(repo, sources):
 
     # Render finding cards
     for item in items:
-        pub_formatted = format_timestamp(item.get("published_at"))
-        col_formatted = format_timestamp(item.get("collected_at"))
+        pub_formatted = format_published_date(item.get("published_at"))
+        col_formatted = format_collected_realtime(item.get("collected_at"))
         cat_formatted = item.get("primary_category", "").replace("_", " ").title()
         sent_badge = get_sentiment_badge_html(item.get("sentiment_label", "NEUTRAL"))
         ev_badge = get_evidence_badge_html(item.get("evidence_status", "UNVERIFIED"))
@@ -129,12 +151,12 @@ def render_latest_findings(repo, sources):
                 <p style="color: #CBD5E1; font-size: 0.92rem; line-height: 1.45; margin-bottom: 10px;">
                     {item.get('content_excerpt')}
                 </p>
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94A3B8; border-top: 1px solid #232D3F; padding-top: 8px;">
-                    <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #94A3B8; border-top: 1px solid #232D3F; padding-top: 8px; flex-wrap: wrap; gap: 8px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
                         <span style="background-color: #1E293B; padding: 2px 6px; border-radius: 4px; color: #CBD5E1;">Category: {cat_formatted}</span>
-                        <span style="margin-left: 10px;">Polarity: <strong>{score:+.2f}</strong></span>
-                        <span style="margin-left: 10px;">Published: {pub_formatted}</span>
-                        <span style="margin-left: 10px;">Collected: {col_formatted}</span>
+                        <span>Polarity: <strong>{score:+.2f}</strong></span>
+                        <span>📅 <strong>Date Posted:</strong> <span style="color: #93C5FD;">{pub_formatted}</span></span>
+                        <span>⚡ <strong>Collected (Real-time):</strong> <span style="color: #34D399; font-weight: 600;">{col_formatted}</span></span>
                     </div>
                     <div>
                         <a href="{item.get('url')}" target="_blank" style="color: #38BDF8; text-decoration: none; font-weight: 500;">
